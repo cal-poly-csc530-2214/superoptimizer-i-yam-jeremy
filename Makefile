@@ -1,32 +1,22 @@
-.SUFFIXES:	.o
+ifndef EXAMPLE
+	echo "Please define EXAMPLE"
+	exit 1
+endif
 
-EXAMPLE = example
+CC	= g++
+DEFINES = -DINC=\"src/userfuncs/$(EXAMPLE).h\" -DOFILE=\"out/$(EXAMPLE).out\"
+CFLAGS	= -g -O2 -std=c++03 -Wall -I. $(DEFINES)
 
-CC	= gcc
-CXX	= g++
-DEFINES = -DINC=\"$(EXAMPLE).frag.c\" -DOFILE=\"$(EXAMPLE).out\"
-CFLAGS	=  -O2 -Wall -Wextra -Wno-unused-variable -Wno-unused-parameter -MMD -I. $(DEFINES)
-CXXFLAGS = $(CFLAGS)
+SRCS	= src/aha.c
 
-SRCS	= aha.c simulator.c
-OBJS	= $(SRCS:.c=.o)
+all: build/$(EXAMPLE)
 
-.c.o:
-	$(CC) -c $(CFLAGS) -o $@ $<
+build/objs/$(EXAMPLE).o: src/main.c src/userfuncs/$(EXAMPLE).h
+	mkdir -p build/objs
+	$(CC) -c $(CFLAGS) -o build/objs/$(EXAMPLE).o src/main.c
 
-.PHONY:	all clean
-
-all: aha
-
-aha: $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $(OBJS)
+build/$(EXAMPLE): build/objs/$(EXAMPLE).o
+	$(CC) $(CFLAGS) -o build/$(EXAMPLE) build/objs/$(EXAMPLE).o
 
 clean:
-	$(RM) -f $(OBJS) aha core *~ *.bak *.d
-
-# Dependencies
-
-aha.o:	$(EXAMPLE).frag.c
-
--include $(SRCS:.c=.d)
-
+	$(RM) -r build
