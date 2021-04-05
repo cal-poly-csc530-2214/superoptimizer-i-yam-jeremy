@@ -1,29 +1,22 @@
-.SUFFIXES:
-.SUFFIXES: .c .o .h
+ifndef EXAMPLE
+	echo "Please define EXAMPLE"
+	exit 1
+endif
 
-EXAMPLE = aha
+CC	= g++
+DEFINES = -DINC=\"src/userfuncs/$(EXAMPLE).h\" -DOFILE=\"out/$(EXAMPLE).out\"
+CFLAGS	= -g -O2 -std=c++03 -Wall -I. $(DEFINES)
 
-CC	= gcc
-CXX	= g++
-DEFINES = -DINC=\"$(EXAMPLE).h\" -DOFILE=\"$(EXAMPLE).out\"
-CFLAGS	= -g -O2 -Wall -I. $(DEFINES)
-CXXFLAGS = $(CFLAGS)
+SRCS	= src/aha.c
 
-SRCS	= aha.c
-OBJS	= $(SRCS:%.c=%.o)
+all: build/$(EXAMPLE)
 
-.c.o:
-	$(CC) -c $(CFLAGS) -o $@ $<
+build/objs/$(EXAMPLE).o: src/main.c src/userfuncs/$(EXAMPLE).h
+	mkdir -p build/objs
+	$(CC) -c $(CFLAGS) -o build/objs/$(EXAMPLE).o src/main.c
 
-.c.o:
-	$(CXX) -c $(CXXFLAGS) -o $@ $<
-
-
-
-all: aha
-
-aha: $(OBJS)
-	$(CXX) $(CXXFLAGS) -o aha $(OBJS)
+build/$(EXAMPLE): build/objs/$(EXAMPLE).o
+	$(CC) $(CFLAGS) -o build/$(EXAMPLE) build/objs/$(EXAMPLE).o
 
 clean:
-	$(RM) -f $(OBJS) aha core *~ *.bak
+	$(RM) -r build

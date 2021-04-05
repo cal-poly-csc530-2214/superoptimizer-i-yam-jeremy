@@ -1,7 +1,17 @@
 // Copyright (C) 2002 by Henry S. Warren, Jr.
+
+/* This is the function for which it is desired to find more efficient
+code. It must have either one or two arguments, both int, and must
+return a 32-bit int quantity. */
+
+int userfun(int x) {
+   if (x >= 0) return x;        // Absolute value.
+   else return -x;
+}
+
+#define NARGS 1                 // Number of args in userfun, 1 or 2.
 const int debug = 0;            // 0 or 1; debugging printouts if 1.
 const int counters = 1;         // 0 or 1; count number of evaluations.
-#define NARGS 1                 // Number of args in userfun, 1 or 2.
 
 /* A note about the registers:
 
@@ -31,7 +41,9 @@ int trialx[] = {1, 0, -1, MAXNEG, MAXPOS, \
    MAXNEG + 1, MAXPOS - 1, 0x01234567, 0x89ABCDEF, -2, 2, -3, 3, \
    -64, 64, -5, -31415};
 #if NARGS == 2
-   int trialy[] = {0};
+int trialy[] = {1, 0, -1, MAXNEG, MAXPOS, \
+   MAXNEG + 1, MAXPOS - 1, 0x01234567, 0x89ABCDEF, -2, 2, -3, 3, \
+   -64, 64, -5, -31415};
 #endif
 // First three values of IMMEDS must be 0, -1, and 1.
 #define IMMEDS 0, -1, 1, MAXNEG, -2, 2, 3
@@ -133,11 +145,11 @@ struct {
 // {pop,    1, 0, {RX,  0,  0}, "pop",   "pop(", ""     },  // Population count.
 // {nlz,    1, 0, {RX,  0,  0}, "nlz",   "nlz(", ""     },  // Num leading 0's.
 // {rev,    1, 0, {RX,  0,  0}, "rev",   "rev(", ""     },  // Bit reversal.
-   {add,    2, 1, {RX,  2,  0}, "add",   "(",    " + "  },  // Add.
-   {sub,    2, 0, { 2,  2,  0}, "sub",   "(",    " - "  },  // Subtract.
-   {mul,    2, 1, {RX,  3,  0}, "mul",   "(",    "*"    },  // Multiply.
-   {div,    2, 0, { 1,  3,  0}, "div",   "(",    "/"    },  // Divide signed.
-   {divu,   2, 0, { 1,  1,  0}, "divu",  "(",    " /u " },  // Divide unsigned.
+   //{add,    2, 1, {RX,  2,  0}, "add",   "(",    " + "  },  // Add.
+   //{sub,    2, 0, { 2,  2,  0}, "sub",   "(",    " - "  },  // Subtract.
+   //{mul,    2, 1, {RX,  3,  0}, "mul",   "(",    "*"    },  // Multiply.
+   //{div,    2, 0, { 1,  3,  0}, "div",   "(",    "/"    },  // Divide signed.
+   //{divu,   2, 0, { 1,  1,  0}, "divu",  "(",    " /u " },  // Divide unsigned.
    {_and,   2, 1, {RX,  2,  0}, "and",   "(",    " & "  },  // AND.
    {_or,    2, 1, {RX,  2,  0}, "or",    "(",    " | "  },  // OR.
    {_xor,   2, 1, {RX,  2,  0}, "xor",   "(",    " ^ "  },  // XOR.
@@ -156,11 +168,6 @@ struct {
 /* ------------------- End of user-setup Portion -------------------- */
 
 #define MAXNUMI 5               // Max num of insns that can be tried.
-#if NARGS == 1
-int userfun(int);
-#else
-int userfun(int, int);
-#endif
 
 #define NTRIALX (int)(sizeof(trialx)/sizeof(trialx[0]))
 #define NTRIALY (int)(sizeof(trialy)/sizeof(trialy[0]))

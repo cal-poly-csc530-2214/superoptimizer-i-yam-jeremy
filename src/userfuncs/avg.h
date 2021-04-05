@@ -143,14 +143,14 @@ struct {
 } isa[] = {
    {neg,    1, 0, {RX,  0,  0}, "neg",   "-(",   ""     },  // Negate.
    {_not,   1, 0, {RX,  0,  0}, "not",   "~(",   ""     },  // One's-complement.
-   {pop,    1, 0, {RX,  0,  0}, "pop",   "pop(", ""     },  // Population count.
+   //{pop,    1, 0, {RX,  0,  0}, "pop",   "pop(", ""     },  // Population count.
    {nlz,    1, 0, {RX,  0,  0}, "nlz",   "nlz(", ""     },  // Num leading 0's.
    {rev,    1, 0, {RX,  0,  0}, "rev",   "rev(", ""     },  // Bit reversal.
-   {add,    2, 1, {RX,  2,  0}, "add",   "(",    " + "  },  // Add.
+   //{add,    2, 1, {RX,  2,  0}, "add",   "(",    " + "  },  // Add.
    {sub,    2, 0, { 2,  2,  0}, "sub",   "(",    " - "  },  // Subtract.
-   {mul,    2, 1, {RX,  3,  0}, "mul",   "(",    "*"    },  // Multiply.
-   {div,    2, 0, { 1,  3,  0}, "div",   "(",    "/"    },  // Divide signed.
-   {divu,   2, 0, { 1,  1,  0}, "divu",  "(",    " /u " },  // Divide unsigned.
+   //{mul,    2, 1, {RX,  3,  0}, "mul",   "(",    "*"    },  // Multiply.
+   //{div,    2, 0, { 1,  3,  0}, "div",   "(",    "/"    },  // Divide signed.
+   //{divu,   2, 0, { 1,  1,  0}, "divu",  "(",    " /u " },  // Divide unsigned.
    {_and,   2, 1, {RX,  2,  0}, "and",   "(",    " & "  },  // AND.
    {_or,    2, 1, {RX,  2,  0}, "or",    "(",    " | "  },  // OR.
    {_xor,   2, 1, {RX,  2,  0}, "xor",   "(",    " ^ "  },  // XOR.
